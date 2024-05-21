@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Employees
+{% endblock %}
+
+{% block main %}
+
+<form class="form-inline"  action="/employees" method="post">
+  <div class="form-group mx-sm-3 mb-2" style="width : 10%">
+    <input type="text" class="form-control" name ="employee" placeholder="Employee Name">
+  </div>
+  <div class="container text-left">
+    <button type="submit" name="btn_clicked" value = "b1" class="btn btn-secondary mb-2 px-10 mr-3" style="width :30%">Add</button>
+  <button type="submit" name="btn_clicked" value = "b2" class="btn btn-secondary mb-2 pl-2 mr-0" style="width :30%">Remove</button>
+  </div>
+
+</form>
+ {% if e_name %}
+    <div class="ml-3 text-left small" style="color : red">{{e_name}}</div>
+ {% endif %}
+<table class="small table table-dark">
+  <thead>
+    <tr>
+      <th style="width : 10%" scope="col">No.</th>
+      <th style="width : 70%"class = "text-left" scope="col">Name</th>
+      <th style="width : 20%" class = "text-left" scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%for row in rows %}
+    <tr>
+      <td></td>
+      <td class = "text-left">{{row["employee"]}}</td>
+      <td class = "text-left">{{row["status"]}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}

@@ -1,0 +1,5 @@
+1. Flask
+2. Flask-Session
+3. requests
+4. CS50
+5. functools

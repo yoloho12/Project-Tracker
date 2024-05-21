@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Change Password
+{% endblock %}
+
+{% block main %}
+    <form action="/chpwd" method="post">
+        <div class="form-group">
+            <input class="form-control" name="old_password" placeholder="Old Password" type="password">
+        {% if o_pwd %}
+        <div class="small text-center p-0 m-0" style="color : red; padding-top : 0px;">{{o_pwd}}</div>
+        {% endif %}
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="New Password" type="password">
+        {% if n_pwd %}
+            <div class="small text-center p-0 m-0" style="color : red; padding-top : 0px;">{{n_pwd}}</div>
+        {% endif %}
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password_cf" placeholder="New Password(again)" type="password">
+        {% if rn_pwd %}
+        <div class="small text-center p-0 m-0" style="color : red; padding-top : 0px;">{{rn_pwd}}</div>
+        {% endif %}
+        </div>
+        {% if error %}
+        <div class="text-center p-0 m-0" style="color : red; padding-top : 0px;">{{error}}</div>
+        {% endif %}
+        <button class="btn btn-primary" type="submit">Change Password</button>
+    </form>
+{% endblock %}

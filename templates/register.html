@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <form action="/register" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
+            {% if u_error %}
+            <div class="small text-center p-0 m-0" style="color : red; padding-top : 0px;">{{u_error}}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Password" type="password">
+            {% if p_error %}
+            <div class="small text-center p-0 m-0" style="color : red; padding-top : 0px;">{{p_error}}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password_cf" placeholder="Password(again)" type="password">
+            {% if cp_error %}
+            <div class="small text-center p-0 m-0" style="color : red; padding-top : 0px;">{{cp_error}}</div>
+            {% endif %}
+        </div>
+        {% if m_error %}
+        <div class="medium text-center p-0 m-0" style="color : red;">{{m_error}}</div>
+        {% endif %}
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+{% endblock %}
