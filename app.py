@@ -359,11 +359,13 @@ def export_report():
             # Merge the project name and progress cells to span across all tasks
             ws.merge_cells(start_row=row_counter-task_count, start_column=1, end_row=row_counter-1, end_column=1)
             ws.merge_cells(start_row=row_counter-task_count, start_column=2, end_row=row_counter-1, end_column=2)
+            ws.merge_cells(start_row=row_counter-task_count, start_column=5, end_row=row_counter-1, end_column=5)
 
             # Align merged cells content to the center vertically
             for i in range(row_counter-task_count, row_counter):
                 ws[f"A{i}"].alignment = Alignment(vertical="center")
                 ws[f"B{i}"].alignment = Alignment(vertical="center")
+                ws[f"E{i}"].alignment = Alignment(vertical="center")
 
         else:
             # If there are no tasks, avoid merging cells
