@@ -3,3 +3,5 @@
 3. requests
 4. CS50
 5. functools
+
+using python 3 pip install above

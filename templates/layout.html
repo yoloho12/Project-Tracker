@@ -1,67 +1,89 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
-    <head>
+<head>
 
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- documentation at http://getbootstrap.com/docs/4.1/, alternative themes at https://bootswatch.com/ -->
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tagmanager/3.0.2/tagmanager.min.css">
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        <!-- https://favicon.io/emoji-favicons/money-mouth-face/ -->
-        <link href="/static/favicon.png" rel="icon">
+    <!-- Font Awesome 6.4.2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-srlHw8hwSYTfDyN6zVNZtJq5JfPbtZ1D5OMCrq6gsbZ8FFkPZBN8NohCklX6eVfGBti47DwG5OoxGYlGaK7BQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-        <link href="/static/styles.css" rel="stylesheet">
+    <!-- Tag Manager CSS
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/tagmanager/3.0.2/tagmanager.min.css"> -->
 
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tagmanager/3.0.2/tagmanager.min.js"></script>
+    <!-- Favicon -->
+    <link href="/static/favicon.png" rel="icon">
 
+    <!-- Custom Stylesheet -->
+    <link href="/static/styles.css" rel="stylesheet">
 
-        <title>ProJect Tracker {% block title %}{% endblock %}</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    </head>
+    <!-- jQuery 3.7.0 -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha384-mQ93q7+RQ1P5KtjHJLJkAxBmHUdoRJfEECX6MZolTBiEBGrhUL4t3sOc1FGEZjHI"
+        crossorigin="anonymous"></script>
 
-    <body>
+    <!-- Popper JS (for Bootstrap tooltips and popovers) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-            <a class="navbar-brand" href="/"><span class="blue">P-Tracker</span></a>
-            <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbar">
-                {% if session.user_id %}
-                    <ul class="navbar-nav mr-auto mt-2 text-white bg-dark">
-                        <li class="nav-item"><a class="nav-link" href="/employees">Employees</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/manage">Manage</a></li>
-                    </ul>
-                    <ul class="navbar-nav ml-auto mt-2 text-white bg-dark">
-                        <li class="nav-item"><a class="nav-link" href="/chpwd">Change Password</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
-                    </ul>
-                {% else %}
-                    <ul class="navbar-nav ml-auto mt-2 text-white bg-dark">
-                        <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-                    </ul>
-                {% endif %}
-            </div>
-        </nav>
+    <!-- Bootstrap 5.3 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
-        <main class="container p-0">
-            {% block main %}{% endblock %}
-        </main>
+    <!-- Tag Manager JS -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/tagmanager/3.0.2/tagmanager.min.js"></script>
 
-        <footer class="small text-center text-white mt-4" >
-            Add employees and Create Projects First.</a>
-        </footer>
+    <title>ProJect Tracker {% block title %}{% endblock %}</title>
 
-    </body>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-md">
+        <a class="navbar-brand" href="/"><span class="blue">P-Tracker</span></a>
+        <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+            data-bs-toggle="collapse" data-bs-target="#navbar" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar">
+            {% if session.user_id %}
+            <ul class="navbar-nav mr-auto mt-2 ">
+                <li class="nav-item"><a class="nav-link text-white" href="/employees">Employees</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="/manage">Manage</a></li>
+            </ul>
+            <ul class="navbar-nav ml-auto mt-2 ">
+                <li class="nav-item"><a class="nav-link text-white" href="/chpwd">Change Password</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="/logout">Log Out</a></li>
+            </ul>
+            {% else %}
+            <ul class="navbar-nav ml-auto mt-2 ">
+                <li class="nav-item"><a class="nav-link text-white" href="/register">Register</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="/login">Login</a></li>
+            </ul>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="container p-0">
+        {% block main %}{% endblock %}
+    </main>
+        {% if session.user_id %}
+        <footer class="small text-center text-white mt-4">
+             Add employees and Create Projects First.
+         </footer>
+        {% endif %}
+
+</body>
 
 </html>

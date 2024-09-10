@@ -7,7 +7,8 @@ We can also see who is available for new project and who is actively working.
 Thank you!
 
 App is base on python Flask.
-after installing - flask
+after installing - flask 
+(including requirements)
 <br>
 ```
 flask run

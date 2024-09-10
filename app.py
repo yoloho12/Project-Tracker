@@ -58,8 +58,8 @@ def merge(list1, list2):
 def index():
     user_id = session["user_id"]
     projects = db.execute("SELECT project,progress,pj_id FROM projects WHERE id = :user_id", user_id = user_id)
-    employees = db.execute("SELECT employee FROM employees WHERE id=:user_id and status=:status;",user_id = user_id, status="idle")
-
+    employees = db.execute("SELECT id,employee FROM employees WHERE id=:user_id;",user_id = user_id)
+    # employees = db.execute("SELECT id,employee FROM employees WHERE id=:user_id and status=:status;",user_id = user_id, status="idle")
 
     #manage data as needfor template
     i= 0
@@ -112,6 +112,7 @@ def index():
 
         #remove task
         if request.form.get("clicked") == "remove":
+            print('remove locations')
             pj_id = request.form.get("pj_id")
             task = request.form.get("t")
             db.execute("DELETE FROM tasks WHERE task LIKE :task AND pj_id = :pj_id;", task = task+"%", pj_id = pj_id)
@@ -221,8 +222,35 @@ def employees():
     else:
         return render_template("employees.html", rows= rows)
 
+@app.route("/assign_user", methods=["POST"])
+@login_required
+def assign_user():
+    employee_name = request.form.get('employee_name')
+    project_id = request.form.get('project_id')
+    db.execute("INSERT INTO employees (pj_id, employee) VALUES (:pj_id, :employee)",
+               pj_id=project_id, employee=employee_name)
+    db.execute("UPDATE employees SET status=:status WHERE employee LIKE :employee ;",
+               employee = employee_name+"%", status = "active")
+    return redirect('/')
 
-
+@app.route("/remove_employee", methods=["POST"])
+@login_required
+def remove_employee():
+    pj_id = request.form.get('pj_id')
+    employee_id = request.form.get('employee_id')
+    
+    # Check if employee is assigned to other active projects
+    active_projects = db.execute(
+        "SELECT COUNT(*) as count FROM employees WHERE employee = :employee_id AND pj_id != :pj_id", 
+        employee_id=employee_id, pj_id=pj_id
+    )[0]['count']
+    
+    # Remove from current project only if active on other projects
+    if active_projects > 0:
+        db.execute("DELETE FROM employees WHERE pj_id = :pj_id AND employee = :employee_id", 
+                   pj_id=pj_id, employee_id=employee_id)
+    
+    return redirect("/")
 
 @app.route("/login", methods = ["GET", "POST"])
 def login():

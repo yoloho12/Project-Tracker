@@ -1,102 +1,145 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Project Tracker
+Project Tracker Dashboard
 {% endblock %}
 
 {% block main %}
-<div>
-    <form action="/export_report" method="get">
-        <button type="submit" class="btn btn-primary">Export Project Report</button>
-    </form>
-</div>
-{% for project in projects %}
-<div>
-    <div class="row d-flex justify-content-center container">
-        <div class="col-md-8">
-            <div class="card-hover-shadow-2x mb-3 card">
-                <div class="card-header-tab card-header">
-                    <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-                        <i class="fa fa-tasks"></i>&nbsp;{{ project['project'] }} - Task List
-                    </div>
+<div class="container my-4">
+    <!-- Export Project Report Button -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Project Dashboard</h2>
+        <form action="/export_report" method="get" id="exportForm">
+            <button type="submit" class="btn btn-primary" id="exportButton">
+                Export Project Report
+                <div id="loadingSpinner" class="spinner-border spinner-border-sm text-light ms-2" role="status"
+                    style="display: none;">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
-                <div class="scroll-area-sm">
-                    <perfect-scrollbar class="ps-show-limits">
-                        <div style="position: static;" class="ps ps--active-y">
-                            <div class="ps-content">
-                                <ul class="list-group list-group-flush">
-                                    {% for t,f in project['tandf'] %}
-                                    <li class="list-group-item">
-                                        <div class="todo-indicator bg-warning"></div>
-                                        <div class="widget-content p-0">
-                                            <div class="widget-content-wrapper">
-                                                <div class="widget-content-left">
-                                                    <div class="widget-heading">
-                                                        {{ t }}
-                                                        <div class="badge badge-danger ml-2">{{ f }}</div>
-                                                    </div>
-                                                </div>
-                                                <div class="widget-content-right">
-                                                    <form action="/" method="post">
-                                                        <div class="widget-content-right">
-                                                            <input type="hidden" class="form-group" name="pj_id" value="{{ project['pj_id'] }}">
-                                                            <input type="hidden" class="form-group" name="t" value="{{ t }}">
-                                                            <input type="hidden" class="form-group" name="f" value="{{ f }}">
-                                                            <button type="submit" class="form-group border-0 btn-transition btn btn-outline-success" name="clicked" value="check">
-                                                                <i class="fa fa-check"></i>
-                                                            </button>
-                                                            <button type="submit" class="form-group border-0 btn-transition btn btn-outline-danger" name="clicked" value="remove">
-                                                                <i class="fa fa-trash"></i>
-                                                            </button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    {% endfor %}
-                                </ul>
+            </button>
+        </form>
+    </div>
+
+    <!-- Project List -->
+    {% for project in projects %}
+    <!-- custom background -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">{{ project['project'] }}</h5>
+            <small>Progress: {{ project['progress'] }}%</small>
+        </div>
+        <div class="card-body">
+            <div class="progress mb-3">
+                <div class="progress-bar" role="progressbar" style="width: {{ project['progress'] }}%;"
+                    aria-valuenow="{{ project['progress'] }}" aria-valuemin="0" aria-valuemax="100">{{
+                    project['progress'] }}%</div>
+            </div>
+
+            <!-- Task List -->
+            <ul class="list-group">
+                {% for t, f in project['tandf'] %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>{{ t }} <span class="badge bg-info ms-2">{{ f }}</span></span>
+                    <div>
+                        <form action="/" method="post" class="d-inline-block">
+                            <input type="hidden" name="pj_id" value="{{ project['pj_id'] }}">
+                            <input type="hidden" name="t" value="{{ t }}">
+                            <input type="hidden" name="f" value="{{ f }}">
+                            <button type="submit" class="btn btn-sm btn-success" name="clicked" value="check">
+                                <i class="fa fa-check"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" type="submit" name="clicked" value="remove">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </li>
+
+                <!-- Confirm Task Deletion Modal -->
+                <!-- <div class="modal fade" id="confirmDelete{{ project['pj_id'] }}-{{ t }}" tabindex="-1"
+                    aria-labelledby="confirmDeleteModal" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Confirm Task Deletion</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete the task "{{ t }}"?
+                            </div>
+                            <div class="modal-footer">
+                                <form action="/" method="post">
+                                    <input type="hidden" name="pj_id" value="{{ project['pj_id'] }}">
+                                    <input type="hidden" name="t" value="{{ t }}">
+                                    <button type="submit" class="btn btn-danger" name="clicked"
+                                        value="remove">Delete</button>
+                                </form>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             </div>
                         </div>
-                    </perfect-scrollbar>
-                </div>
+                    </div>
+                </div> -->
+                {% endfor %}
+            </ul>
 
-                <!-- Existing Progress Bar Code Here -->
-
-                <div class="d-block text-right card-footer">
-                    {% for emp in project['employee'] %}
-                    <span class="tm-tag tm-tag-info" id="obdaG_1">
-                        <span>{{ emp }}</span>
-                    </span>
-                    {% endfor %}
-                    <!-- Add User Button -->
-                    <button class="btn btn-secondary" data-toggle="collapse" data-target="#addUserCollapse{{ project['pj_id'] }}" aria-expanded="false" aria-controls="addUserCollapse{{ project['pj_id'] }}">
-                        Assign Employee
-                    </button>
-                    <!-- Assign User Form -->
-                    <div class="collapse mt-2" id="addUserCollapse{{ project['pj_id'] }}">
-                        <div class="card card-body">
-                            <form action="/assign_user" method="post">
-                                <input type="hidden" name="project_id" value="{{ project['pj_id'] }}">
-                                <div class="form-group">
-                                    <label for="userSelect{{ project['pj_id'] }}">Select Employee:</label>
-                                    <select class="form-control" id="userSelect{{ project['pj_id'] }}" name="user_id">
-                                        {% for employee in all_employees %}
-                                        <option value="{{ employee['id'] }}">{{ employee['name'] }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Assign</button>
-                            </form>
+            <!-- Add Task Section -->
+            <button class="btn btn-secondary mt-3" type="button" data-bs-toggle="collapse"
+                data-bs-target="#addTaskCollapse{{ project['pj_id'] }}">
+                Add Task
+            </button>
+            <div class="collapse mt-2" id="addTaskCollapse{{ project['pj_id'] }}">
+                <form action="/" method="post">
+                    <input type="hidden" name="project_id" value="{{ project['pj_id'] }}">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="New Task" name="task" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-success" type="submit" name="clicked" value="add">Add</button>
                         </div>
                     </div>
+                </form>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <!-- Display Assigned Employees -->
+                    {% for emp in project['employee'] %}
+                    <span class="badge bg-secondary">{{ emp }}</span>
+                    {% endfor %}
                 </div>
 
-                <!-- Add Task Button and Form Here -->
-
+                <!-- Assign Employee -->
+                <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#assignUserCollapse{{ project['pj_id'] }}">
+                    Assign Employee
+                </button>
+                <div class="collapse mt-2" id="assignUserCollapse{{ project['pj_id'] }}">
+                    <form action="/assign_user" method="post">
+                        <input type="hidden" name="project_id" value="{{ project['pj_id'] }}">
+                        <div class="form-group mt-2">
+                            <select class="form-control" name="employee_name">
+                                {% for employee in employees %}
+                                  {% if employee['employee'] not in project['employee'] %}
+                                    <option value="{{ employee['employee'] }}">{{ employee['employee'] }}</option>
+                                  {% endif %}
+                                {% endfor %}
+                              </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm">Assign</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+    {% endfor %}
 </div>
-{% endfor %}
+
+<!-- Script for Loading Spinner on Export -->
+<script>
+    document.getElementById('exportForm').addEventListener('submit', function () {
+        document.getElementById('loadingSpinner').style.display = 'inline-block';
+        document.getElementById('exportButton').disabled = true;
+    });
+</script>
 {% endblock %}
